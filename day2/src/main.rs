@@ -63,7 +63,37 @@ fn part1(filename: &str) -> i32 {
     total
 }
 
+fn part2(filename: &str) -> i32 {
+    let mut total: i32 = 0;
+    for line in std::fs::read_to_string(filename).unwrap().lines() {
+        let mut max_red: i32 = 0;
+        let mut max_green: i32 = 0;
+        let mut max_blue: i32 = 0;
+
+        let rolls: Vec<&str> = strip(line);
+        for roll in rolls.iter() {
+            let gacha: HashMap<&str, i32> = parse(roll);
+
+            if gacha.contains_key("red") && *gacha.get("red").unwrap() > max_red {
+                max_red = *gacha.get("red").unwrap();
+            }
+
+            if gacha.contains_key("green") && *gacha.get("green").unwrap() > max_green {
+                max_green = *gacha.get("green").unwrap();
+            }
+
+            if gacha.contains_key("blue") && *gacha.get("blue").unwrap() > max_blue {
+                max_blue = *gacha.get("blue").unwrap();
+            }
+        }
+
+        total += max_red * max_green * max_blue;
+    }
+
+    total
+}
+
 fn main() {
-    let id: i32 = part1("input.txt");
-    println!("{}", id);
+    println!("{}", part1("input.txt"));
+    println!("{}", part2("input.txt"));
 }
